@@ -1,0 +1,6 @@
+{
+  "nome": "lápis",
+  "descricao": "lápis para uso escolar e afins",
+  "custo": 100,
+  "qnt_estoque": 5
+}

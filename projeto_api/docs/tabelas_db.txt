@@ -1,0 +1,52 @@
+CREATE SCHEMA dudu_fidelidade;
+
+USE dudu_fidelidade;
+
+CREATE TABLE `clientes` (
+  `cd_cliente` int NOT NULL AUTO_INCREMENT,
+  `nm_cliente` varchar(50) NOT NULL,
+  `nr_cpf` varchar(15) NOT NULL,
+  `telefone` varchar(20) NOT NULL,
+  `email` varchar(20) DEFAULT NULL,
+  `senha` varchar(20) DEFAULT NULL,
+  `dt_nascimento` date DEFAULT NULL,
+  `sexo` varchar(20) DEFAULT NULL,
+  `num_cartao` varchar(20) DEFAULT NULL,
+  `saldo` int DEFAULT NULL,
+  PRIMARY KEY (`cd_cliente`),
+  UNIQUE KEY `nr_cpf` (`nr_cpf`)
+);
+
+CREATE TABLE `endereco` (
+  `cd_endereco` int NOT NULL AUTO_INCREMENT,
+  `cd_cliente` int DEFAULT NULL,
+  `cep` varchar(9) DEFAULT NULL,
+  `numero` varchar(5) DEFAULT NULL,
+  `bairro` varchar(50) DEFAULT NULL,
+  `rua` varchar(80) DEFAULT NULL,
+  `complemento` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`cd_endereco`),
+  KEY `cd_cliente` (`cd_cliente`),
+  CONSTRAINT `endereco_ibfk_1` FOREIGN KEY (`cd_cliente`) REFERENCES `clientes` (`cd_cliente`)
+);
+
+CREATE TABLE `compras` (
+  `cd_compras` int NOT NULL AUTO_INCREMENT,
+  `cd_cliente` int DEFAULT NULL,
+  `pnts_add` int DEFAULT NULL,
+  `dt` date DEFAULT NULL,
+  `tipo_compra` varchar(50) DEFAULT NULL,
+  `loja` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`cd_compras`),
+  KEY `cd_cliente` (`cd_cliente`),
+  CONSTRAINT `endereco_ibfk_2` FOREIGN KEY (`cd_cliente`) REFERENCES `clientes` (`cd_cliente`)
+);
+
+CREATE TABLE `premios` (
+	`cd_premio` int NOT NULL AUTO_INCREMENT,
+    `nome` varchar(200) NOT NULL,
+    `descricao` varchar(2000),
+    `custo` int,
+    `qnt_estoque` int,
+    PRIMARY KEY (`cd_premio`)
+);
