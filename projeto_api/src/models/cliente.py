@@ -55,12 +55,14 @@ class Endereco:
     bairro: str = field(init=False)
     complemento: str = field(init=False)
 
-    def __post_init__(self):
-        infos = self.verifica_cep()
+    def _place_infos(self, infos):
         self.rua = infos["logradouro"]
         self.bairro = infos["bairro"]
         self.complemento = infos["complemento"]
 
     def verifica_cep(self):
         resposta = requests.get(f"https://viacep.com.br/ws/{self.cep}/json/")
-        return resposta.json()
+        if resposta.status_code == 400:
+            return 0
+        self._place_infos(resposta.json())
+        return 1

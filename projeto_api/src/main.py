@@ -9,7 +9,7 @@ from models.premios import PremioTable
 from sqlalchemy import text
 from funcs.controller_funcs import delete_stmt, init_cliente, init_compras, init_endereco, init_premios, get_cliente, get_premio, commit_db, patch_cliente
 from constantes import SCHEMA
-
+from funcs.cpf_validation import CPF
 
 app = FastAPI()
 
@@ -67,9 +67,15 @@ def pontuar(informacoes: PontuarCliente):
     return ("Pontos adicionados!")
 
 
-@app.post("/cliente")
+@app.post("/cliente", responses={400: {"model": ApiResponse}})
 def cadastra_cliente(cliente: ClienteInsert, cep_e_num: EnderecoBase):
     endereco = Endereco(cep_e_num.cep, cep_e_num.num)
+    cpf = CPF(cliente.nr_cpf)
+    if not endereco.verifica_cep():
+        return JSONResponse(status_code=400, content={"status": 400, "message": "CEP inválido"})
+    if not cpf.cpf_validation():
+        return JSONResponse(status_code=400, content={"status": 400, "message": "CPF inválido"})
+
     endereco = init_endereco(endereco)
     cliente = init_cliente(cliente, endereco)
     commit_db(session, cliente)
