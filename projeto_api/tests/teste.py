@@ -3,7 +3,7 @@ import requests
 
 obj = {
   "cliente": {
-    "nr_cpf": "teste123",
+    "nr_cpf": "33333333333",
     "nm_cliente": "Jonas",
     "telefone": "995972397",
     "email": "jonas@gmail.com",
@@ -14,7 +14,7 @@ obj = {
     "saldo": 0
   },
   "cep_e_num": {
-    "cep": "97060-820",
+    "cep": "57018-520",
     "num": 0
   }
 }
@@ -23,4 +23,5 @@ obj = {
 
 url = requests.post("http://127.0.0.1:8000/cliente", json=obj)
 
-print(url.text)
+#print(url.text)
+print(url.json())

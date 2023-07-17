@@ -80,7 +80,7 @@ def cadastra_cliente(cliente: ClienteInsert, cep_e_num: EnderecoBase):
     cliente = init_cliente(cliente, endereco)
     commit_db(session, cliente)
 
-    return ("Sucesso!!!")
+    return JSONResponse(status_code=200, content={"status": 200, "message": "Sucesso!!!"})
 
 
 @app.post("/premios")
@@ -88,7 +88,7 @@ def cadastra_premio(premio: PremioInsert):
     premio = init_premios(premio)
     commit_db(session, premio)
 
-    return ("Sucesso!")
+    return JSONResponse(status_code=200, content={"status": 200, "message": "Sucesso!!!"})
 
 
 @app.post("/premio")
@@ -99,7 +99,7 @@ def resgata_premio(info_resgate: PremioResgate):
     premio.qnt_estoque -= info_resgate.qnt_resgate
     commit_db(session, premio, cliente)
 
-    return ("Sucesso!")
+    return JSONResponse(status_code=200, content={"status": 200, "message": "Sucesso!!!"})
 
 
 @app.patch("/cliente_atualiza", responses={400: {"model": ApiResponse}})
@@ -107,7 +107,7 @@ async def atualiza_cliente(cliente: ClientePatch):
     c_db = get_cliente(session, cliente.cd_cliente, True)
     if c_db is not None:
         c_db = patch_cliente(c_db, cliente)
-        return JSONResponse(status_code=200)
+        return JSONResponse(status_code=200, content={"status": 200, "message": "Sucesso!!!"})
     else:
         return JSONResponse(status_code=400, content={"status": 400, "message": "Cliente não encontrado"})
 
@@ -122,7 +122,7 @@ def deleta_cliente(cd_cliente: int):
         delete_stmt(session, ClienteTable, cliente.cd_cliente)
 
         session.commit()
-        return ("Deletado")
+        return JSONResponse(status_code=200, content={"status": 200, "message": "Deletado com sucesso"})
     else:
         # RAISE ERROR
         return ("Cliente não encontrado")
