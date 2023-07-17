@@ -64,7 +64,7 @@ def pontuar(informacoes: PontuarCliente):
     compras = init_compras(informacoes)
     commit_db(session, compras)
 
-    return ("Pontos adicionados!")
+    return JSONResponse(status_code=200, content={"status": 200, "message": "Pontos adicionados!!!"})
 
 
 @app.post("/cliente", responses={400: {"model": ApiResponse}})
